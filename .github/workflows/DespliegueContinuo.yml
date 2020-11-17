@@ -1,4 +1,4 @@
-name: Actions 😎
+name: DespliegueContinuo
 
 on:
   pull_request: {}
