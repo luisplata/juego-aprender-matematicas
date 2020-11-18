@@ -11,7 +11,7 @@ public class LogicaDeRespuestas
 
     public void CalcularResultadoDeOperacionActual(int numeroIngresado, int tabla, int numeroActual)
     {
-        var resultado = CalcularResultadoDeDatosGuardados(tabla, numeroActual);
+        var resultado = CalcularResultadoDeLaOpeacionPrincipalDeLaLudica(tabla, numeroActual);
         if(resultado == numeroIngresado)
         {
             controladorRespuestasMono.RespuestaCorrecta(resultado.ToString()); 
@@ -31,7 +31,7 @@ public class LogicaDeRespuestas
         throw new FormatoDeDatoIngresadoNoEsValido($"El dato {text}, no es valido como respuesta");
     }
 
-    private int CalcularResultadoDeDatosGuardados(int tabla, int numeroActual)
+    public int CalcularResultadoDeLaOpeacionPrincipalDeLaLudica(int tabla, int numeroActual)
     {
         var multiplicacion = tabla * numeroActual;
         var primerNumero = multiplicacion / 10;
