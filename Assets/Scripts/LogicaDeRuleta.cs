@@ -4,16 +4,17 @@ public class LogicaDeRuleta
 {
     private IRuletaMono logicaMono;
     private int numeroMin, numeroMax;
-    private int numeroAnterior;
-    private int cantidadDeIntentosDeControl;
     public LogicaDeRuleta(IRuletaMono ruleta)
     {
         logicaMono = ruleta;
         numeroMin = 1;
         numeroMax = 10;
-        numeroAnterior = 0;
-        cantidadDeIntentosDeControl = 5;
+        NumeroAnterior = 0;
+        CantidadDeIntentosDeControl = 5;
     }
+
+    public int NumeroAnterior { get; set; }
+    public int CantidadDeIntentosDeControl { get; set; }
 
     public void CalcularNumeroDeRuleta()
     {
@@ -23,9 +24,9 @@ public class LogicaDeRuleta
         {
             numeroRandom = ServiceLocator.Instance.GetService<ICalculosGenerales>().CalcularintRandom(numeroMin, numeroMax);
             control++;
-        } while (numeroRandom == numeroAnterior && control <= cantidadDeIntentosDeControl);
+        } while (numeroRandom == NumeroAnterior && control <= CantidadDeIntentosDeControl);
 
-        numeroAnterior = numeroRandom;
+        NumeroAnterior = numeroRandom;
 
         ServiceLocator.Instance.GetService<IManejoDeDatosDelJuego>().GuardarTablaDeMultiplicar(numeroRandom);
 

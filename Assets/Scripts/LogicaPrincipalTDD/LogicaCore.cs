@@ -27,6 +27,7 @@ namespace Tests
         [TestCase(3, 3, 6)]
         public void NumeroDelDado(int respuestaObligatoria, int numeroAnterior, int cantidadDeVecesEjecutado)
         {
+            ServiceLocator.Instance.ClearAll();
             ICalculosGenerales subCalculos = Substitute.For<ICalculosGenerales>();
             subCalculos.CalcularintRandom(Arg.Any<int>(), Arg.Any<int>())
                 .Returns(respuestaObligatoria);
@@ -41,6 +42,30 @@ namespace Tests
             logica.NumeroAnterior = numeroAnterior;
 
             logica.CalcularElNumeroDelDado();
+
+            subCalculos.Received(cantidadDeVecesEjecutado)
+                .CalcularintRandom(Arg.Any<int>(), Arg.Any<int>());
+        }
+
+        [TestCase(3, 2, 1)]
+        [TestCase(3, 3, 6)]
+        public void NumeroDeRuleta(int respuestaObligatoria, int numeroAnterior, int cantidadDeVecesEjecutado)
+        {
+            ServiceLocator.Instance.ClearAll();
+            ICalculosGenerales subCalculos = Substitute.For<ICalculosGenerales>();
+            subCalculos.CalcularintRandom(Arg.Any<int>(), Arg.Any<int>())
+                .Returns(respuestaObligatoria);
+
+            ServiceLocator.Instance.RegisterService(subCalculos);
+            IManejoDeDatosDelJuego subManejador = Substitute.For<IManejoDeDatosDelJuego>();
+            ServiceLocator.Instance.RegisterService(subManejador);
+
+            IRuletaMono subRuletaMono = Substitute.For<IRuletaMono>();
+            LogicaDeRuleta logica = new LogicaDeRuleta(subRuletaMono);
+
+            logica.NumeroAnterior = numeroAnterior;
+
+            logica.CalcularNumeroDeRuleta();
 
             subCalculos.Received(cantidadDeVecesEjecutado)
                 .CalcularintRandom(Arg.Any<int>(), Arg.Any<int>());
