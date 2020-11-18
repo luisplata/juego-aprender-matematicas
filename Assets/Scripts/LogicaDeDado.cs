@@ -1,14 +1,19 @@
 ﻿public class LogicaDeDado
 {
     private IDadoMono logicaMono;
-    private int numeroMin, numeroMax, numeroAnterior;
-    private int cantidadDeIntentosDeControl;
+    private int numeroMin, numeroMax;
+
     public LogicaDeDado(IDadoMono dado)
     {
         logicaMono = dado;
         numeroMin = 1;
         numeroMax = 10;
+        CantidadDeIntentosDeControl = 5;
     }
+
+    public int CantidadDeIntentosDeControl { get; set; }
+    public int NumeroAnterior { get; set; }
+
     public void CalcularElNumeroDelDado()
     {
         var numeroRandom = 0;
@@ -17,9 +22,9 @@
         {
             numeroRandom = ServiceLocator.Instance.GetService<ICalculosGenerales>().CalcularintRandom(numeroMin, numeroMax);
             control++;
-        } while (numeroRandom == numeroAnterior && control <= cantidadDeIntentosDeControl);
+        } while (numeroRandom == NumeroAnterior && control <= CantidadDeIntentosDeControl);
 
-        numeroAnterior = numeroRandom;
+        NumeroAnterior = numeroRandom;
 
         ServiceLocator.Instance.GetService<IManejoDeDatosDelJuego>().GuardarNumeroDeLaOperacion(numeroRandom);
 

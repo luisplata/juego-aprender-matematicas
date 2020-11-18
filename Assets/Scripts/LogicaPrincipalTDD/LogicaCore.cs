@@ -22,5 +22,28 @@ namespace Tests
             //assrt
             Assert.AreEqual(esperado, logica.CalcularResultadoDeLaOpeacionPrincipalDeLaLudica(tabla, numero));
         }
+
+        [TestCase(3, 2, 1)]
+        [TestCase(3, 3, 6)]
+        public void NumeroDelDado(int respuestaObligatoria, int numeroAnterior, int cantidadDeVecesEjecutado)
+        {
+            ICalculosGenerales subCalculos = Substitute.For<ICalculosGenerales>();
+            subCalculos.CalcularintRandom(Arg.Any<int>(), Arg.Any<int>())
+                .Returns(respuestaObligatoria);
+
+            ServiceLocator.Instance.RegisterService(subCalculos);
+            IManejoDeDatosDelJuego subManejador = Substitute.For<IManejoDeDatosDelJuego>();
+            ServiceLocator.Instance.RegisterService(subManejador);
+
+            IDadoMono subDadoMono = Substitute.For<IDadoMono>();
+            LogicaDeDado logica = new LogicaDeDado(subDadoMono);
+
+            logica.NumeroAnterior = numeroAnterior;
+
+            logica.CalcularElNumeroDelDado();
+
+            subCalculos.Received(cantidadDeVecesEjecutado)
+                .CalcularintRandom(Arg.Any<int>(), Arg.Any<int>());
+        }
     }
 }
